@@ -62,12 +62,8 @@ git checkout -b fix-issue-123
    Ensure you have all the dependencies and environment configured.  
 
    ```bash
-   # Create and activate the conda environment
-   conda env create -f MolSanitizer/environment.yml
-   conda activate MolSanitizer
-   
-   # Install the package in editable mode
-   pip install -e MolSanitizer
+   # Create the Pixi environments
+   pixi install
    ```
 
 3. Run Tests Before Submitting
@@ -75,7 +71,7 @@ git checkout -b fix-issue-123
 
    ```bash
    # Run tests
-   python -m pytest test/
+   pixi run test
    ```
 
 4. Update or Add Documentation  
@@ -86,7 +82,7 @@ git checkout -b fix-issue-123
 
    ```bash
    # Run tests after making changes
-   python -m pytest test/
+   pixi run test
    ```
 ---
 

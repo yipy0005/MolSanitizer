@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "molsanitizer": {
+      "command": "pixi",
+      "args": ["run", "-e", "mcp", "python", "-m", "msani.mcp.server"],
+      "env": {
+        "MSANI_MCP_ROOT": "."
+      },
+      "disabled": false,
+      "autoApprove": [],
+      "disabledTools": []
+    }
+  }
+}

@@ -1,0 +1,47 @@
+[workspace]
+name = "molsanitizer"
+description = "Pixi workspace for MolSanitizer development, testing, and Kiro MCP integration"
+channels = ["conda-forge", "rdkit"]
+platforms = ["osx-arm64", "osx-64", "linux-64", "win-64"]
+
+[dependencies]
+python = ">=3.10,<3.15"
+numpy = "*"
+pandas = "*"
+rdkit = "==2025.9.1"
+librdkit-dev = "==2025.9.1"
+libboost-devel = "*"
+scikit-build-core = "*"
+openbabel = "*"
+pyaml = "*"
+gemmi = "*"
+cmake = "<=3.29"
+pybind11 = "*"
+eigen = "*"
+compilers = "*"
+pkg-config = "*"
+make = "*"
+ninja = "*"
+
+[pypi-dependencies]
+molsanitizer = { path = ".", editable = true }
+
+[feature.mcp.pypi-dependencies]
+mcp = ">=1.0,<3"
+
+[feature.pdbqt.pypi-dependencies]
+meeko = ">=0.7.1"
+scipy = "*"
+gemmi = "*"
+
+[environments]
+default = { solve-group = "default" }
+mcp = { features = ["mcp"], solve-group = "default" }
+pdbqt = { features = ["pdbqt"], solve-group = "default" }
+
+[tasks]
+test = "python -m unittest discover -s test"
+test-mcp = "python -m unittest test.test_mcp"
+evaluate-ai = "python scripts/evaluate_ai_integrations.py"
+evaluate-ai-required = "python scripts/evaluate_ai_integrations.py --require-mcp-sdk"
+mcp = "python -m msani.mcp.server"

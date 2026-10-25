@@ -38,6 +38,8 @@ dependencies = [
 [project.optional-dependencies]
 oe = ["openeye-toolkits"]
 pdbqt = ["meeko>=0.7.1", "scipy", "gemmi"]
+# The MCP extra is mirrored by the Pixi `mcp` feature.
+mcp = ["mcp>=1.0,<3"]
 
 [project.urls]
 Homepage = "https://github.com/carlssonlab/MolSanitizer.git"
@@ -49,6 +51,7 @@ strain = "msani.filtering.strain_filter:main"
 m_ionizer = "msani.moltransform.ionizer:main"
 m_tautomerizer = "msani.moltransform.tautomerizer:main"
 gen3d = "msani.conformers.conformers:main"
+molsanitizer-mcp = "msani.mcp.server:main"
 
 [tool.scikit-build]
 cmake.source-dir = "."

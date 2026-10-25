@@ -24,8 +24,11 @@ A web app is available to try at [carlssonlabtools.icm.uu.se/molsani](https://ca
 
 ## Installation
 
+Prefer Pixi for repository development:
+
 ```bash
-pip install molsanitizer
+pixi install
+pixi run test
 ```
 
 Prebuilt wheels are available for MacOS, Linux and Windows. For building from source
@@ -36,9 +39,9 @@ and details on dependencies, see the
 
 | Feature | Install | Notes |
 | --- | --- | --- |
-| PDBQT output | `pip install "molsanitizer[pdbqt]"` | Requires Meeko. |
-| OEB output | `pip install "molsanitizer[oe]"` | Requires OpenEye toolkits and a licence (`export OE_LICENSE=/path/to/oe_license.txt`). |
-| Open Babel embedding | `conda install openbabel` | Used when selected as the embedding method, or as a fallback after an RDKit embedding timeout. |
+| PDBQT output | `pixi install -e pdbqt` | Requires Meeko. |
+| OEB output | separately provisioned OpenEye toolkit in the Pixi environment | Requires an OpenEye licence (`export OE_LICENSE=/path/to/oe_license.txt`). The licensed toolkit is not available from the public package indexes, so it is intentionally not locked in this public manifest. |
+| Open Babel embedding | included in the default Pixi environment | Used when selected as the embedding method, or as a fallback after an RDKit embedding timeout. |
 
 ## Quick start
 
@@ -65,7 +68,7 @@ forces tab-separated parsing; omit it for the space-separated example above.
 Prepare the SMILES (strip salts, enumerate tautomers, protonate at pH 7):
 
 ```bash
-msani -i example.smi --removesalts --tautomers --protonation --pH 7
+pixi run msani -i example.smi --removesalts --tautomers --protonation --pH 7
 ```
 
 This writes `example_clean.smi`, where acetic acid is deprotonated:
@@ -82,16 +85,16 @@ CCC1(c2ccccc2)C(=O)[N-]C(=O)NC1=O Phenobarbital_2
 Generate 3D structures for docking from the prepared file:
 
 ```bash
-msani -i example_clean.smi --gen3d --format sdf --numconfs 20   # SDF conformer ensembles
-msani -i example_clean.smi --gen3d --format db2                 # DOCK3/DOCK6
-msani -i example_clean.smi --gen3d --format mol2                # Mol2 format
-msani -i example_clean.smi --gen3d --format pdbqt               # AutoDock Vina (needs [pdbqt])
-msani -i example_clean.smi --gen3d --format oeb.lib             # OpenEye FRED/HYBRID (needs [oe])
+pixi run msani -i example_clean.smi --gen3d --format sdf --numconfs 20   # SDF conformer ensembles
+pixi run msani -i example_clean.smi --gen3d --format db2                 # DOCK3/DOCK6
+pixi run msani -i example_clean.smi --gen3d --format mol2                # Mol2 format
+pixi run msani -i example_clean.smi --gen3d --format pdbqt               # AutoDock Vina (needs [pdbqt])
+pixi run msani -i example_clean.smi --gen3d --format oeb.lib             # OpenEye FRED/HYBRID (needs [oe])
 ```
 
 Each format is written to its own directory (`sdf/`, `db2/`, `pdbqt/`, `oeb/`, `mol2/`).
 Several formats can be requested at once, e.g. `--format sdf db2`. Run
-`msani -h` for all options, and see the
+`pixi run msani --help` for all options, and see the
 [quickstart](https://msani.readthedocs.io/en/latest/quickstart.html) and
 [output documentation](https://msani.readthedocs.io/en/latest/outputs.html)
 for details.
@@ -102,7 +105,7 @@ MolSanitizer runs with bundled defaults out of the box. To set personal
 defaults (for example, tool paths or cluster settings), create a config file:
 
 ```bash
-msani config init
+pixi run msani config init
 ```
 
 The command prints the location of `msani_configurations.yaml`
@@ -119,9 +122,9 @@ MAX_JOBS: 100
 Useful commands:
 
 ```bash
-msani config show                            # merged settings and where each comes from
-msani config use /shared/mygroup/msani.yaml  # select an existing config file
-msani config reset-path                      # return to the standard location
+pixi run msani config show                            # merged settings and where each comes from
+pixi run msani config use /shared/mygroup/msani.yaml  # select an existing config file
+pixi run msani config reset-path                      # return to the standard location
 ```
 
 Command-line arguments always take priority over the config file. For a
@@ -134,6 +137,19 @@ precedence rules and batch jobs.
 Full documentation, including the methodology behind MolSanitizer, is available
 at [msani.readthedocs.io](https://msani.readthedocs.io).
 
+
+## AI integrations
+
+Repository-local Kiro skills cover chemistry, CLI/data contracts, native builds,
+SLURM operations, and regression validation. The
+`molsanitizer-engineer` Kiro agent loads these skills, uses the Pixi-backed MCP
+server, and applies approval gates for high-impact operations. An optional
+local MCP server provides bounded SMILES validation/preparation, input
+inspection, project metadata, and allow-listed unittest execution. See the
+[AI setup and usage guide](https://msani.readthedocs.io/en/latest/ai_guide.html)
+for the simple setup and usage steps. The detailed
+[AI integration guide](https://msani.readthedocs.io/en/latest/ai_integrations.html)
+covers security limits and evaluation.
 
 ## Contributing
 

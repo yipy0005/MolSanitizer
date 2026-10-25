@@ -28,6 +28,8 @@ Contents
    usage
    outputs
    config
+   ai_guide
+   ai_integrations
    citation
    feedback
 

@@ -1,0 +1,5 @@
+{
+  "enabled": true,
+  "networkAccess": "DEFAULT_BLOCKED",
+  "mcpSandboxing": true
+}
